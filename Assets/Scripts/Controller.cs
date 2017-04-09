@@ -126,7 +126,7 @@ public class Controller: MonoBehaviour
 				return myPoint;
 			}
 		}
-		return Vector2.zero;
+		return new Vector2(transform.position.x, transform.position.y);
 	}
 
 	private void ExecuteNextAction ()

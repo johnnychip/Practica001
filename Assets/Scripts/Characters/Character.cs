@@ -91,7 +91,7 @@ namespace Characters
 			sonidoAtacar.Play ();
 
 			Map.Tile actualTile = mytileMap.GetTileAt( new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y)));
-
+			Debug.Log (actualTile.transform.position);
 			List<Map.Tile> targets = GetTargets (actualTile, 1);
 			foreach (Map.Tile tile in targets) 
 			{
@@ -160,19 +160,20 @@ namespace Characters
 				{
 					if (x == 0 && y == 0)
 						continue;
-					Debug.Log (x + " " + y);
+					
 					int checkX = Mathf.RoundToInt(node.transform.position.x) + x;
-					int checkY = Mathf.RoundToInt(node.transform.position.x) + y;
-
+					int checkY = Mathf.RoundToInt(node.transform.position.y) + y;
+					Debug.Log (checkX + " " + checkY);
 					if (checkX >= 0 && checkX < mytileMap.tiles[0].tiles.Length && checkY >= 0 && checkY < mytileMap.tiles.Length)
 					{
 						targets.Add(mytileMap.GetTileAt(new Vector2 ((float)checkX, (float)checkY)));
 					}
 				}
 
-				if (targets.Contains (node))
-					targets.Remove (node);
+
 			}
+			if (targets.Contains (node))
+				targets.Remove (node);
 
 			return targets;
 		}

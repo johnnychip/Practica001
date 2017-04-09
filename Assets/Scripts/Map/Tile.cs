@@ -29,10 +29,11 @@ namespace Map
 		private float cost;
 
 		void Awake()
-		{if (character != null)
+		{/*if (character != null)
 				cost = 0f;
 			else
 				cost = 1f;
+				*/
 		}
 
         public float Cost
