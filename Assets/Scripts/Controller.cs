@@ -7,9 +7,12 @@ public class Controller: MonoBehaviour
     [SerializeField]
     private Character character;
 
+	private bool IsPathTime;
+	private Command lastAction;
 	private int actionPoints = 10;
 	private bool isExecuting;
 	private Queue<Command> actions;
+	private Queue<Command> tempActions;
 	public int CurrentActionPoints {
 		get;
 		private set;
@@ -18,6 +21,7 @@ public class Controller: MonoBehaviour
 	private void Awake ()
 	{
 		actions = new Queue<Command> ();
+		tempActions = new Queue<Command> ();
 		character = GetComponent<Character> ();
 	}
 
@@ -36,20 +40,17 @@ public class Controller: MonoBehaviour
 	void Update ()
 	{
 
-		if (Input.GetKeyDown (KeyCode.A)) {
+		/*if (Input.GetKeyDown (KeyCode.A)) {
 			TryAddAction (new Attack ());
 		}
 
 		if (Input.GetKeyDown (KeyCode.S)) {
 			TryAddAction (new SuperAttack ());
-		}
+		}*/
 
-		if (Input.GetKeyDown (KeyCode.M)) {
-			TryAddAction (new Move (5,4));
-		}
-
-		if (Input.GetMouseButtonDown (0)) 
+		if (IsPathTime && Input.GetMouseButtonDown (0)) 
 		{
+			IsPathTime = false;
 			Vector2 aimPoint = ShootRay ();
 
 			TryAddAction (new Move ((int)aimPoint.x,(int)aimPoint.y));
@@ -59,6 +60,43 @@ public class Controller: MonoBehaviour
 			ExecuteActions ();
 		}
 
+	}
+
+	public void AddAtack()
+	{
+		TryAddAction (new Attack ());
+		IsPathTime = false;
+	}
+
+	public void AddSuperAttack()
+	{
+		TryAddAction (new SuperAttack ());
+		IsPathTime = false;
+	}
+
+	public void PressPathTime()
+	{
+		IsPathTime = true;
+	}
+		
+	public void DeletLastAction()
+	{	
+		Debug.Log (actions.Count);
+		if (actions.Count > 1) {
+	
+			for (int i = 0;actions.Count>1;i++) {
+				tempActions.Enqueue (actions.Dequeue ());
+			}
+			CurrentActionPoints += actions.Dequeue ().Cost;
+			 int tempLimit = tempActions.Count;
+			for (int i = 0; i < tempLimit; i++) {
+				actions.Enqueue (tempActions.Dequeue ());
+			}
+		} else if (actions.Count != 0) {
+			CurrentActionPoints += actions.Dequeue ().Cost;
+		} 
+		
+		Debug.Log (actions.Count);
 	}
 
 	public bool TryAddAction (Command action)
@@ -93,6 +131,7 @@ public class Controller: MonoBehaviour
 
 	private void ExecuteNextAction ()
 	{
+		IsPathTime = false;
 		if (actions.Count == 0) {
 			Reset ();
 			return;

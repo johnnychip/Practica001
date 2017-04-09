@@ -13,6 +13,18 @@ namespace Characters
 		[SerializeField]
 		private Map.SetPathFinding pathFinding;
 
+		[SerializeField]
+		private AudioSource sonidoAtacar;
+
+		[SerializeField]
+		private AudioSource sonidoCaminar;
+
+		[SerializeField]
+		private AudioSource sonidoDano;
+
+		[SerializeField]
+		private Animator anim;
+
 
 		public Map.Tilemap mytileMap;
 
@@ -42,6 +54,9 @@ namespace Characters
 		public void MoveTo (Vector2 tile, Action onFinish)
         {
             //TODO: pathfinding
+			if(anim!=null)
+			anim.SetTrigger ("move");
+			sonidoCaminar.Play();
 			Vector2 myPosition = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y));
 
 			QuitPosition (myPosition);
@@ -73,6 +88,8 @@ namespace Characters
 		public void Attack (Action onFinish)
 		{
 
+			sonidoAtacar.Play ();
+
 			Map.Tile actualTile = mytileMap.GetTileAt( new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y)));
 
 			List<Map.Tile> targets = GetTargets (actualTile, 1);
@@ -91,6 +108,8 @@ namespace Characters
 
 		public void SuperAttack (Action onFinish)
 		{
+			sonidoAtacar.Play ();
+
 			Map.Tile actualTile = mytileMap.GetTileAt( new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y)));
 
 			List<Map.Tile> targets = GetTargets (actualTile, 2);
@@ -117,6 +136,10 @@ namespace Characters
 
 		public void DealDamage (int attackPoint)
 		{
+			
+			sonidoDano.Play ();
+			if(anim!=null)
+				anim.SetTrigger ("damage");
 			int damage = attackPoint - defense;
 
 			health -= damage;
