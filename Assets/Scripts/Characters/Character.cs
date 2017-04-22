@@ -91,18 +91,18 @@ namespace Characters
 			sonidoAtacar.Play ();
 
 			Map.Tile actualTile = mytileMap.GetTileAt( new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y)));
-			Debug.Log (actualTile.transform.position);
+		
 			List<Map.Tile> targets = GetTargets (actualTile, 1);
 			foreach (Map.Tile tile in targets) 
 			{
 
 				if (tile.Character != null) {
 					tile.Character.DealDamage (attack);
-					Debug.Log("take this");
+				
 				}
 
 			}
-			Debug.Log ("Attack in your balls");
+		
 			onFinish ();
 		}
 
@@ -115,7 +115,7 @@ namespace Characters
 			List<Map.Tile> targets = GetTargets (actualTile, 2);
 			foreach (Map.Tile tile in targets) 
 			{
-				Debug.Log (tile.gameObject.transform.position);
+
 				if (tile.Character != null) {
 					tile.Character.DealDamage (attack);
 				}
@@ -152,7 +152,7 @@ namespace Characters
 		{
 			List<Map.Tile> targets = new List<Map.Tile>();
 
-			Debug.Log ("actual nodo " + node.transform.position);
+		
 
 			for (int x = -range; x <= range; x++)
 			{
@@ -163,7 +163,7 @@ namespace Characters
 					
 					int checkX = Mathf.RoundToInt(node.transform.position.x) + x;
 					int checkY = Mathf.RoundToInt(node.transform.position.y) + y;
-					Debug.Log (checkX + " " + checkY);
+
 					if (checkX >= 0 && checkX < mytileMap.tiles[0].tiles.Length && checkY >= 0 && checkY < mytileMap.tiles.Length)
 					{
 						targets.Add(mytileMap.GetTileAt(new Vector2 ((float)checkX, (float)checkY)));

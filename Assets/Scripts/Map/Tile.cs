@@ -16,7 +16,7 @@ namespace Map
 				return character; 
 			} 
 			set{
-				Debug.Log ("paso");
+				
 				character = value; 
 				if (character != null)
 					cost = 0f;
